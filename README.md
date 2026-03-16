@@ -2,17 +2,14 @@
 
 
 ## Overview
-
 Industrial embroidery machines operate continuously in textile manufacturing units and unexpected failures can cause significant production downtime.
 
 This project develops a **machine learning based predictive maintenance system** that monitors sensor data from embroidery machines and detects early signs of abnormal machine behavior.
 
 Instead of relying on simple threshold alarms from individual sensors, the system learns **normal operational patterns across multiple sensors and time** and detects deviations that may indicate future machine failure.
 
----
 
 ## Problem Statement
-
 Traditional machine monitoring systems rely on fixed thresholds such as:
 
 - temperature > threshold
