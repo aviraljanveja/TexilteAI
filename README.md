@@ -1,7 +1,6 @@
 # Predictive Maintenance System for Automated Embroidery Machines.
 
 
-
 ## Problem Statement
 Traditional machine monitoring systems rely on fixed sensor-thresholds such as:
 
@@ -19,11 +18,11 @@ Predictive maintenance aims to:
 - Improve production reliability.
 
 
-
 ## Solution Overview
 We use a **lighweight encoder only transformer** architecture to learn normal machine operation patterns across time and across multiple sensors, in an unsupervised learning framework. Thereby detecting deviations from normal operating patterns, which may indicate impending machine failure.
 
 **Why Transformer Encoder?**
+
 **Why Unsupervised Learning?**
 Since labeled data is rarely available in industrial environments, the model learns **normal machine operation** patterns from **multivariate time series stream** of sensor data.
 
