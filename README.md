@@ -1,6 +1,5 @@
-# Predictive Maintenance System for Automated Embroidery Machines using Transformer based Multivariate Time-Series Anomaly Detection.
+# Predictive Maintenance System for Automated Embroidery Machines.
 
----
 
 ## Overview
 
