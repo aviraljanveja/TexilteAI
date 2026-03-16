@@ -19,7 +19,7 @@ Predictive maintenance aims to:
 
 
 ## Solution Overview
-We use a **lighweight encoder only transformer** architecture to learn normal machine operation patterns across time and sensors, in an unsupervised learning framework. Thereby detecting deviations from normal operating patterns, which may indicate impending machine failure.
+We use a **lighweight encoder only transformer** architecture to learn normal machine operation patterns across time and across multiple sensors, in an unsupervised learning framework. Thereby detecting deviations from normal operating patterns, which may indicate impending machine failure.
 
 ### Why Transformer Encoder?
 ### Why Unsupervised Learning?
