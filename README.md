@@ -1,4 +1,4 @@
-# Transformer based Predictive Maintenance for Textile Industry.
+# Transformer based Unsupervised Predictive Maintenance system for the Textile Industry.
 We use a lightweight **transformer encoder** to learn the normal operating patterns of automatic embroidery machines across time and sensors, in an **unsupervised learning** framework. Deviation from this learned normal behavior, indicates impending machine failure and alerts us beforehand to schedule predictive maintenance.
 
 
