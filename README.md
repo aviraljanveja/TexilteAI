@@ -1,4 +1,4 @@
-# Predictive Maintenance System for Automated Embroidery Machines.
+# Predictive Maintenance System for Automated Embroidery in the Textile Industry.
 
 
 ## Overview
