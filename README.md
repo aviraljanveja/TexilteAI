@@ -1,7 +1,5 @@
 # Transformer based Predictive Maintenance for Textile Industry.
 
-
-## Overview
 Traditional machine monitoring systems rely on sensor-thresholds based alerts such as, raise alarm if temperature > threshold or vibration > threshold and so on. These alerts happen **after the problem has already occurred**, leading to sudden machine shutdown, production downtime and production delays.
 
 Instead, Predictive maintenance aims to:
