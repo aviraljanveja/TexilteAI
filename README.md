@@ -1,4 +1,4 @@
-# Predictive Maintenance System for Automated Embroidery in the Textile Industry.
+# Transformer based Predictive Maintenance for Textile Industry.
 
 
 ## Overview
