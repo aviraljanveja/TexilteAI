@@ -1,16 +1,3 @@
-# 🧵 TextileAI — Predictive Maintenance for Embroidery Machines
-
-## 📌 Overview
-
-**TextileAI** is a practical machine learning project that implements **unsupervised time-series anomaly detection** for predictive maintenance in a small textile setup.
-
-We monitor **4 automated embroidery machines**, each equipped with **4 sensors**:
-
-- Temperature
-- Vibration
-- Motor RPM
-- Thread Tension
-
 The system learns **normal machine behavior** and detects anomalies using a **Transformer-based autoencoder**, inspired by recent research on time-series anomaly detection.
 
 ---
@@ -196,39 +183,3 @@ TextileAI/
 | Temporal patterns | Transformer |
 | Non-stationarity | RevIN |
 | Overfitting | Simple decoder |
-
----
-
-## 🔧 Future Improvements
-
-- Real-time streaming
-- Dashboard
-- Edge deployment
-- Semi-supervised learning
-
----
-
-## 🎯 Key Takeaways
-
-- End-to-end ML system
-- Industrial use case
-- Strong ML portfolio project
-
----
-
-## 📚 References
-
-- Vanilla Transformer Encoder for TS Anomaly Detection
-- https://github.com/chatterboy/revisitVanillaTransEncUnsupTSAD
-
----
-
-## 🤝 Contributing
-
-Pull requests welcome.
-
----
-
-## 📌 Author
-
-A hands-on ML engineering project.
