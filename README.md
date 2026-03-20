@@ -1,6 +1,5 @@
 # Transformer based Predictive Maintenance for Textile Machinery
 
----
 
 ## Chapter 1 — Problem Definition
 
