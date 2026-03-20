@@ -1,185 +1,250 @@
-The system learns **normal machine behavior** and detects anomalies using a **Transformer-based autoencoder**, inspired by recent research on time-series anomaly detection.
+# 🧵 TextileAI — Predictive Maintenance for Embroidery Machines
+
+# Chapter 1 — Problem Definition
+
+## 1. Objective
+TextileAI implements **unsupervised time series anomaly detection** for predictive maintenance in a small textile setup of 4 embroidery machines.
+
+- Each machine has 4 sensors:
+  - Temperature
+  - Vibration
+  - Motor RPM
+  - Thread Tension
+
+Total features:
+4 machines × 4 sensors = 16-dimensional multivariate time series
 
 ---
 
-## 🎯 Objective
+## 2. Learning Approach
 
-To build a **real-world ML system** that:
+We use **unsupervised learning (reconstruction-based)**:
 
-1. Collects sensor data from embroidery machines  
-2. Learns normal operational patterns  
-3. Detects anomalies in real time  
-4. Enables early maintenance and reduces downtime  
-
----
-
-## 🏭 System Setup
-
-### Machines and Sensors
-
-| Machine | Sensors |
-|--------|--------|
-| M1 | Temp, Vibration, RPM, Thread Tension |
-| M2 | Temp, Vibration, RPM, Thread Tension |
-| M3 | Temp, Vibration, RPM, Thread Tension |
-| M4 | Temp, Vibration, RPM, Thread Tension |
-
-### Total Features
-
-4 machines × 4 sensors = 16 features (multivariate time series)
+- Train only on **normal operating data**
+- Learn normal patterns
+- Detect anomalies via **reconstruction error**
 
 ---
 
-## 📊 Example Sensor Data
+# Chapter 2 — System Architecture
 
-A single timestamp snapshot:
+Pipeline:
 
-| Time | M1_Temp | M1_Vib | M1_RPM | M1_Tension | ... | M4_Tension |
-|------|--------|--------|--------|------------|-----|------------|
-| t₁ | 65°C | 0.12 | 1200 | 0.45 | ... | 0.50 |
-| t₂ | 66°C | 0.11 | 1195 | 0.47 | ... | 0.49 |
+Raw Sensor Data → Preprocessing → Windowing → RevIN Normalization → Conv1D Embedding → Transformer Encoder → Linear Decoder → Reconstruction Error → Anomaly Detection
 
 ---
 
-## 🧠 Core Idea
+# Chapter 3 — Data Ingestion (NEW — Not in Paper)
 
-We use an **unsupervised learning approach**:
+## 1. Sensor Data Collection
 
-- Train model only on **normal machine data**
-- Model learns how normal patterns look
-- Any deviation → **anomaly (potential fault)**
-
----
-
-## 🏗️ System Architecture
-
-Raw Sensor Data → Preprocessing → Sliding Window Segmentation → Segment Normalization (RevIN) → Conv1D Embedding → Transformer Encoder → Linear Decoder → Reconstruction Error → Anomaly Detection → Maintenance Alert
-
----
-
-## ⚙️ Step-by-Step Methodology
-
-### 1. Data Collection
-
-Sensor data is collected at fixed intervals (e.g., every second).
+Each machine generates data every second.
 
 Example:
 
+| Timestamp | Temp | Vibration | RPM | Tension |
+|----------|------|----------|-----|--------|
+| 10:00:00 | 65°C | 0.12 | 1200 | 0.45 |
+
+---
+
+## 2. Data Volume Estimation
+
+Per machine:
+
+- 1 reading/sec → 86400/day
+- 4 machines → 345,600 rows/day
+
+Monthly:
+
+~10 million rows
+
+---
+
+## 3. Data Transmission (MQTT)
+
+We use **MQTT protocol**:
+
+- Lightweight
+- Ideal for IoT setups
+
+Flow:
+
+Sensors → Edge Device → MQTT Broker → Backend
+
+Example JSON:
+
 {
-  "timestamp": "2026-01-01 10:00:00",
-  "M1_temp": 65,
-  "M1_vibration": 0.12,
-  "M1_rpm": 1200,
-  "M1_tension": 0.45
+  "machine_id": "M1",
+  "temp": 65,
+  "vibration": 0.12,
+  "rpm": 1200,
+  "tension": 0.45,
+  "timestamp": "2026-01-01T10:00:00"
 }
 
 ---
 
-### 2. Preprocessing
+## 4. Storage
 
-Z-score normalization:
+Options:
+
+| Option | Use Case |
+|------|--------|
+| CSV | Simple setup |
+| SQLite | Local DB |
+| InfluxDB | Time-series optimized |
+
+---
+
+# Chapter 4 — Preprocessing
+
+## 1. Normalization
+
+We use **Z-score normalization**:
 
 x' = (x - μ) / σ
 
 Example:
-Temp values: [60, 65, 70]
-Mean = 65, Std ≈ 4.08
-Normalized 70 ≈ 1.22
+
+Temp = [60, 65, 70]
+μ = 65, σ ≈ 4.08
+
+Normalized(70) = (70-65)/4.08 ≈ 1.22
 
 ---
 
-### 3. Sliding Window Segmentation
+## 2. Sliding Window Segmentation
 
-Window size = 5
+Window size = 60 (seconds)
 
-[1,2,3,4,5]
-[2,3,4,5,6]
-[3,4,5,6,7]
+Example:
 
-Shape: (N, L, V)
+[1,2,3,4,5] → [1,2,3], [2,3,4], [3,4,5]
 
----
+Shape:
 
-### 4. Segment-Level Normalization (RevIN)
+(N, L, V)
 
-Handles non-stationary signals by normalizing each segment independently.
-
----
-
-### 5. Embedding Layer (Conv1D)
-
-Captures local temporal patterns using kernel size 3.
+N = windows
+L = 60
+V = 16
 
 ---
 
-### 6. Transformer Encoder
+## 3. Segment-Level Normalization (RevIN)
 
-Learns temporal dependencies using attention mechanism.
+Each window normalized independently.
 
----
-
-### 7. Decoder (Linear Layer)
-
-Reconstructs input with minimal complexity.
+Purpose:
+- Handle non-stationarity
+- Remove scale shifts
 
 ---
 
-### 8. Training Strategy
+# Chapter 5 — Model Architecture
+
+## 1. Embedding (Conv1D)
+
+- Kernel size = 3
+- Output dim = 64
+
+---
+
+## 2. Transformer Encoder
+
+Parameters (scaled for our setup):
+
+| Parameter | Value |
+|----------|------|
+| Layers | 2 |
+| Heads | 4 |
+| Model Dim | 64 |
+| FF Dim | 128 |
+| Dropout | 0.1 |
+
+---
+
+## 3. Decoder
+
+- Linear layer
+- Maps 64 → 16
+
+---
+
+# Chapter 6 — Training Strategy
+
+## 1. Loss Function
+
+We use **Mean Squared Error (MSE)**:
 
 Loss = ||x - x̂||²
 
 Example:
-Error = 54
+
+Actual: [1200, 1210, 1190]  
+Pred:   [1198, 1205, 1185]
+
+Error:
+(2² + 5² + 5²) = 54
 
 ---
 
-### 9. Anomaly Detection
+## 2. Training Type
+
+- Batch training (offline)
+- Train on 1–2 weeks of normal data
+
+---
+
+# Chapter 7 — Inference Strategy
+
+## 1. Batch vs Real-time
+
+- Training: batch
+- Inference: near real-time (streaming windows)
+
+---
+
+## 2. Anomaly Score
 
 score = ||x - x̂||²
 
-if score > threshold → anomaly
-
 ---
 
-### 10. Threshold Selection
+## 3. Threshold
 
-threshold = mean + 3 × std
+threshold = mean + 3×std
 
 Example:
-Mean = 10, Std = 5 → Threshold = 25
+
+Mean = 10  
+Std = 5  
+
+Threshold = 25
 
 ---
 
-## 🚨 Example Anomaly Scenario
+## 4. Decision
+
+if score ≥ threshold → anomaly
+
+---
+
+# Chapter 8 — Example Scenario
 
 Normal:
-Error = 8 → normal
+
+RPM = [1200,1210,1195] → error = 8
 
 Fault:
-Error = 120 → anomaly
+
+RPM = [1200,800,300] → error = 120 → anomaly
 
 ---
 
-## 📦 Repository Structure
+# Chapter 9 — Practical Notes
 
-TextileAI/
-├── data/
-├── sensors/
-├── preprocessing/
-├── models/
-├── training/
-├── inference/
-├── utils/
-├── notebooks/
-└── README.md
-
----
-
-## ⚡ Why This Approach Works
-
-| Challenge | Solution |
-|----------|---------|
-| No labels | Unsupervised learning |
-| Temporal patterns | Transformer |
-| Non-stationarity | RevIN |
-| Overfitting | Simple decoder |
+- No positional encoding (as per paper)
+- RevIN improves performance
+- Window size is critical hyperparameter
