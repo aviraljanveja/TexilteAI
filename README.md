@@ -1,4 +1,4 @@
-# 🧵 TextileAI — Predictive Maintenance for Embroidery Machines
+# Transformer based Predictive Maintenance for Textile Machinery
 
 # Chapter 1 — Problem Definition
 
