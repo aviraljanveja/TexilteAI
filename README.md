@@ -1,7 +1,7 @@
 # Transformer based Predictive Maintenance for Textile Machinery
 
 
-## Chapter 1 — Problem Definition
+## Chapter 1 : Problem Definition
 
 ### 1. Objective
 TextileAI implements **unsupervised time series anomaly detection** for predictive maintenance in a small textile setup of 4 embroidery machines.
