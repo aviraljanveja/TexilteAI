@@ -1,8 +1,10 @@
 # Transformer based Predictive Maintenance for Textile Machinery
 
-# Chapter 1 — Problem Definition
+---
 
-## 1. Objective
+## Chapter 1 — Problem Definition
+
+### 1. Objective
 TextileAI implements **unsupervised time series anomaly detection** for predictive maintenance in a small textile setup of 4 embroidery machines.
 
 - Each machine has 4 sensors:
@@ -14,9 +16,7 @@ TextileAI implements **unsupervised time series anomaly detection** for predicti
 Total features:
 4 machines × 4 sensors = 16-dimensional multivariate time series
 
----
-
-## 2. Learning Approach
+### 2. Learning Approach
 
 We use **unsupervised learning (reconstruction-based)**:
 
@@ -34,9 +34,9 @@ Raw Sensor Data → Preprocessing → Windowing → RevIN Normalization → Conv
 
 ---
 
-# Chapter 3 — Data Ingestion (NEW — Not in Paper)
+## Chapter 3 — Data Ingestion (NEW — Not in Paper)
 
-## 1. Sensor Data Collection
+### 1. Sensor Data Collection
 
 Each machine generates data every second.
 
@@ -46,9 +46,7 @@ Example:
 |----------|------|----------|-----|--------|
 | 10:00:00 | 65°C | 0.12 | 1200 | 0.45 |
 
----
-
-## 2. Data Volume Estimation
+### 2. Data Volume Estimation
 
 Per machine:
 
@@ -59,9 +57,7 @@ Monthly:
 
 ~10 million rows
 
----
-
-## 3. Data Transmission (MQTT)
+### 3. Data Transmission (MQTT)
 
 We use **MQTT protocol**:
 
@@ -83,9 +79,7 @@ Example JSON:
   "timestamp": "2026-01-01T10:00:00"
 }
 
----
-
-## 4. Storage
+### 4. Storage
 
 Options:
 
