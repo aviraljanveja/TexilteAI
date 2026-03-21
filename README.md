@@ -1,5 +1,5 @@
 # Transformer based Predictive Maintenance for Textile Machinery
-(Intro & Overview here)
+In this work, we use a lightweight transformer architecture for unsupervised time-series anomaly detection. Hence enabling predictive maintenance for automated emroidery machines in a small scale Textile MSME setup.
 
 ---
 
